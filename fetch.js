@@ -4,7 +4,7 @@ const fetched = await fetch(url);
 const data = await fetched.json();
 
 const template = document.querySelector('template');
-const result = document.querySelector('div');
+const result = document.querySelector('#contentOverlay');
 const engine = new liquidjs.Liquid();
 
 // First render the template
@@ -13,8 +13,8 @@ engine.parseAndRender(template.innerHTML, {persons: data.data})
         result.innerHTML = html;
         
         // After temdplate is rendered, calculate birthdays
-       daysUntil();
-       daysOld();
+    //    daysUntil();
+    //    daysOld();
     });
 
 function daysUntil(){
