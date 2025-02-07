@@ -1,0 +1,35 @@
+body { margin: 0;  background-color: lightblue;}
+canvas { display: block; background-color: lightblue;}
+
+#contentOverlay{ 
+    color: red; 
+    position: absolute;
+    left: 0;
+    bottom: 0;
+
+
+    width: 100vw;
+    height: 100vh;
+   
+
+    border: 3px solid blue;
+
+    display: flex;
+    justify-content: center;
+
+}
+
+#contentOverlay h2{
+    font-size: 2em;
+    margin: 0;
+    position: absolute;
+    bottom: 2em;
+}
+
+#contentOverlay h3{
+    font-size: 4em;
+    color: blue;
+    margin: 0;
+    position: absolute;
+    top: 2em;
+}

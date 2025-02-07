@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Three.js OBJ Loader</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.rawgit.com/mrdoob/three.js/r128/examples/js/loaders/OBJLoader.js"></script>
+    <script src="main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/liquidjs/dist/liquid.browser.min.js"></script>
+    <script type="module" src="fetch.js"></script>
+
+    <div id="contentOverlay">
+        <template>
+            <h2>hallo ik ben {{person.name}}</h2>
+        </template>
+        <h3></h3>
+        {% if person.birthdate %} {% assign birthdate = person.birthdate %}
+        <div class="birthday-container" data-birthdate="{{birthdate}}">
+          <p>Birthday: <span class="birthday-date">{{birthdate}}</span></p>
+          <p>Days until birthday: <span class="days-until"></span></p>
+            <p>Days old: <span class="days-old"></span></p>
+        </div>
+        {% endif %} 
+    </div>
+
+<!-- 
+    <div>
+        <template>
+          {% for person in persons %}
+          <h2>{{person.name}}</h2>
+          {% if person.birthdate %} {% assign birthdate = person.birthdate %}
+          <div class="birthday-container" data-birthdate="{{birthdate}}">
+            <p>Birthday: <span class="birthday-date">{{birthdate}}</span></p>
+            <p>Days until birthday: <span class="days-until"></span></p>
+              <p>Days old: <span class="days-old"></span></p>
+          </div>
+          {% endif %} {% endfor %}
+        </template>
+      </div> -->
+  
+
+
+</body>
+</html>
