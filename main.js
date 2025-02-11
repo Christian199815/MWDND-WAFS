@@ -1,78 +1,70 @@
-let scene, camera, renderer, mainModel, skyboxGeo, skybox;
-let skyboxRotationSpeed = 0.3;
-let modelArray = [];
-let scrollPosition = 0;
+let scene, camera, renderer, mainModel, skyboxGeo, skybox, time;
+let skyboxRotationSpeed = 0.3;                                                          // the rotation coefficient to rotate the skybox
+let modelArray = [];                                                                    // the list of models we are going to push
+let scrollPosition = 0;                                                                 // the scroll position we are going to start from
+                                                               
+const ySpeed = 0.000001;                                                                // the speed coefficient for the y position
+const maxCameraY = 100;                                                                 // maximum y-position for the camera
+const scrollSpeed = 0.0009;                                                             // speed of the scroll movement
+const orbitingModels = [];                                                              // the list of models that are going to be orbitting
+const ORBIT_RADIUS = 5000;                                                              // the radius of the orbit for the models that will orbit
+const ORBIT_SPEED = 0.001;                                                              // the speed coefficient for the orbitting models
+const maxScrollH = -24;                                                                 // max scroll height for the user
+const skyboxes = ["/mountains/arid2", "/night/divine", "/transition/kenon_cloudbox"];   // list of the skybox names
+const skyboxSize = 13000;                                                               // the size of the cube/skybox so we can stand/float in it 
+const camStartHeight = -6000;                                                           // the physical height of the camera it starts at
 
-const keysPressed = {};
-const ySpeed = 0.000001;
-const maxCameraY = 100;
-const scrollSpeed = 0.0009;
-const orbitingModels = [];
-const ORBIT_RADIUS = 5000;
-const ORBIT_SPEED = 0.001;
-const maxScrollH = -24;
-const skyboxes = ["/mountains/arid2", "/night/divine", "/transition/kenon_cloudbox"];
-const skyboxSize = 13000;
-const camStartHeight = -6000;
+const CAMERA_ORBIT_RADIUS = 5000;                                                       // radius of the camera orbital rotation
+const CAMERA_ORBIT_SPEED = 0.5;                                                         // speed of camera orbital rotation
+let cameraOrbitAngle = 0;                                                               // Current angle of camera orbit
 
-const CAMERA_ORBIT_RADIUS = 5000; // Distance from center
-const CAMERA_ORBIT_SPEED = 0.5; // Speed of orbital rotation
-let cameraOrbitAngle = 0; // Current angle of camera orbit
+var clock;                                                                              // initaite a clock variable for easy acces
+var speed = 2;                                                                          // store the speed (units a second)
+var delta = 0;                                                                          // store the delta for easy accesing
 
-var clock;
-var speed = 2; //units a second
-var delta = 0;
-
-let domLoaded;
-
-
-let zoomLevel = 5000;
-const MIN_ZOOM = 5000;   // Very close
-const MAX_ZOOM = 7000;   // Starting distance
-const ZOOM_SPEED_MULTIPLIER = 3.5;  
-let wholeScroll 
+let zoomLevel = 5000;                                                                   // zooming level start value
+const MIN_ZOOM = 5000;                                                                  // minimal zooming level
+const MAX_ZOOM = 7000;                                                                  // maximal zooming distance
+const ZOOM_SPEED_MULTIPLIER = 3.5;                                                      // Zooming multiplier for speeding up the zoom factor
+let wholeScroll                                                                         // clamped value for where we are with scrolling
 
 
-
+// The start function that initiates all working variables
+// most of the needed THREE js objects get loaded here
 function init() {
-    // Scene setup
-    scene = new THREE.Scene();
-    // camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera = new THREE.PerspectiveCamera(
+    scene = new THREE.Scene();                                                          // scene setup
+    camera = new THREE.PerspectiveCamera(                                               // camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         55,
         window.innerWidth / window.innerHeight,
         70,
         30000
     );
-    camera.position.set(2500, camStartHeight, 2500);
-    camera.rotation.set(0, 95, 0);
+    camera.position.set(2500, camStartHeight, 2500);                                    // set the position of the camera to the center of the skyox
+    camera.rotation.set(0, 95, 0);                                                      // rotate the camera by 95 degrees
 
-    renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.domElement.id = "canvas";
-    document.body.appendChild(renderer.domElement);
+    renderer = new THREE.WebGLRenderer({ antialias: true });                            // setup the renderer, with anti aliassing
+    renderer.setSize(window.innerWidth, window.innerHeight);                            // set the renderer  size to size of the viewport
+    renderer.domElement.id = "canvas";                                                  // give the renderer the id of 'canvas'
+    document.body.appendChild(renderer.domElement);                                     // add the renderer to the html
 
-    const light = new THREE.AmbientLight(0xffffff); // soft white light
-    scene.add(light);
+    const light = new THREE.AmbientLight(0xffffff);                                     // create a soft white light 
+    scene.add(light);                                                                   // add the light to the scene
 
-    changeSkybox(skyboxes[1]);
+    changeSkybox(skyboxes[1]);                                                          // run the skybox function so the images get loaded on to the skybox
 
-    clock = new THREE.Clock();
+    clock = new THREE.Clock();                                                          // attach the THREE clock attribute to the stored value
 
     // Load main model
-    CreateModelPrefab('chris/chris.obj', 'chris/texture.jpg', { x: 0, y: -6550, z: 0 }, { x: 0, y: 0, z: 0 }, { x: 6000, y: 6000, z: 6000 }, false, 0);
+    CreateModelPrefab('chris/chris.obj', 'chris/texture.jpg', { x: 0, y: -6550, z: 0 }, { x: 0, y: 0, z: 0 }, { x: 6000, y: 6000, z: 6000 }, false, 0); //run the create model function
 
-    createOrbitingModels();
+    createOrbitingModels();                                                             // create the models that are going to be orbitting around the main model
 
-    // Event listeners
-    document.addEventListener("keydown", onDocumentKeyDown, false);
-    document.addEventListener("keyup", onDocumentKeyUp, false);
-    window.addEventListener('wheel', handleWheel, { passive: false });
-    window.addEventListener('touchmove', handleTouchMove, { passive: false });
-    window.addEventListener('resize', onWindowResize, false);
+    window.addEventListener('wheel', handleWheel, { passive: false });                  // add an event listener to the window, that checks the scrolling and runs the 'handleWheel' function
+    window.addEventListener('touchmove', handleTouchMove, { passive: false });          // add an event listener to the window, that checks the touching move and runs the 'handleTouchMove' function
+    window.addEventListener('resize', onWindowResize, false);                           // add an event listener to the window, that checks the resizing and runs the 'onWindowResize' function
 
     // Start animation loop
-    animate();
+    animate();  
 }
 
 // #region Model Loading
@@ -273,13 +265,6 @@ function handleTouchMove(event) {
     }
 }
 
-function onDocumentKeyDown(event) {
-    keysPressed[event.which] = true;
-}
-
-function onDocumentKeyUp(event) {
-    delete keysPressed[event.which];
-}
 
 //#endregion
 
@@ -350,7 +335,7 @@ function onWindowResize() {
 }
 
 // #endregion
-let time;
+
 function animate() {
     requestAnimationFrame(animate);
     updateOrbitingModels();
@@ -362,9 +347,7 @@ function animate() {
     }
 
     if (time > 1.2) {
-        addModelAtHeight(scrollPosition);
-        // addModelAtHeight();
-
+        addModelAtHeight();
     }
 
     if(wholeScroll <= -20){
@@ -374,8 +357,6 @@ function animate() {
         updateCameraPosition();
     }
 
-
-    // console.log(time);
     renderer.render(scene, camera);
 }
 

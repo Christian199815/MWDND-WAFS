@@ -7,8 +7,59 @@ canvas {
   display: block;
 }
 
+ul{
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
 :root {
-  --: ;
+  --hardcode-color: #781c15;
+  --highlight-color: #1266a7;
+  --api-color:  color-mix( in oklch, var(--hardcode-color) 80%, var(--highlight-color));
+
+  /* 375px */
+  --edgeSpacing-small: 1em;
+  --header-height-small: 20em;
+  --section-width-small: 12em;
+  --section-height-small: 8em;
+
+  --header-h2-size-small: 3em;
+  --header-h4-size-small: 3em;
+  --header-h4-top-small: 2em;
+
+  --header-img-width-small: 6em;
+  --header-img-height-small: 6em;
+
+  --section-h2-size-small: 1.3em;
+  --section-p-size-small: 1.1em;
+
+  --footer-size-small: 1em;
+  --footer-cornerSpacing-small: 0.7em;
+
+  --classSection-gap-small: 10px;
+  --classSection-width-small: 300px;
+
+  /* 1081px */
+  --edgeSpacing-large: 2em;
+  --header-height-large: 19em;
+  --section-width-large: 20em;
+  --section-height-large: 10em;
+
+  --header-h2-size-large: 5em;
+  --header-h4-size-large: 4em;
+  --header-h4-top-large: 2.5em;
+  --header-img-width-large: 18em;
+  --header-img-height-large: 18em;
+
+  --section-h2-size-large: 1em;
+  --section-p-size-large: 1em;
+
+  --footer-size-large: 1em;
+  --footer-cornerSpacing-large: 0.7em;
+
+  --classSection-gap-large: 10px;
+  --classSection-width-large: 300px;
 }
 
 header,
@@ -47,15 +98,31 @@ canvas {
 header {
   display: flex;
   justify-content: center;
-
+  align-items: center;
   bottom: 0;
-
   width: 100vw;
-  height: 20rem;
+}
+
+header ul{
+ display: flex;
+ flex-direction: row;
+
+ justify-content: center;
+ align-items: center;
+ gap: 4em;
+}
+
+header ul li{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
 }
 
 header h2 {
-  font-size: 5em;
+  /* font-size: 5em; */
+  margin:0;
+  padding: 0;
 
   font-family: "Oswald", serif;
   font-optical-sizing: auto;
@@ -64,109 +131,84 @@ header h2 {
 }
 
 header h4 {
-  font-size: 4em;
   color: #1266a7;
   margin: 0;
-  position: absolute;
-  top: 2.9em;
+  /* position: absolute; */
+
+
+  font-family: "Oswald", serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: normal;
 }
 
 section {
   display: flex;
   width: 20em;
   height: 12em;
+
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+}
+
+section p{
+  font-family: "Oswald", serif;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-style: normal;
+
+  margin: 0;
+  padding: 0;
+}
+
+section h2{
+  font-family: "Oswald", serif;
+  font-optical-sizing: auto;
+  font-weight: 800;
+  font-style: normal;
 }
 
 /* Basic info section */
 section:nth-of-type(1) {
-  left: 2em;
-  top: 25%;
 
-  flex-direction: column;
-  align-items: center;
-}
-
-section:nth-of-type(1) p {
-  margin: 0;
-  padding: 0;
-  font-size: 1.2em;
-}
-
-/* Woonplaats */
-section:nth-of-type(1) p:nth-of-type(1)::before {
-}
-
-/* Opleiding */
-section:nth-of-type(1) p:nth-of-type(2)::before {
-}
-
-/* Werk */
-section:nth-of-type(1) p:nth-of-type(3)::before {
 }
 
 /* hobbies info section */
 section:nth-of-type(2) {
-  right: 2em;
-  top: 25%;
-  align-items: center;
 
-  flex-direction: column;
-}
-
-section:nth-of-type(2) ul {
-  margin: 0;
-  padding: 0;
-  font-size: 1.2em;
-
-  list-style: none;
 }
 
 /* leerdoelen section */
 section:nth-of-type(3) {
-  left: 2em;
-  top: 25%;
-  flex-direction: column;
-  align-items: center;
+
 }
 
 /* klas section */
 section:nth-of-type(4) {
-  right: 2em;
-  top: 25%;
   height: fit-content;
-  flex-direction: column;
-  align-items: center;
+
 }
 
 section:nth-of-type(4) ul {
-  margin:0;
-  padding:0;
-  list-style-type: none;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  width: 300px; /* or any width you need */
 }
 
 /* Birthday section */
 section:nth-of-type(5) {
-  /* left: 2em; */
-  bottom: 0;
-  flex-direction: column;
-  align-items: center;
+  bottom: 2em; 
+  height: fit-content;
 }
 
-
-
-footer {
-  bottom: 0.7em;
-  right: 0.7em;
+section:not(section:last-of-type){
+  top: 25%;
 }
 
 header,
 section {
   display: none;
-
   /* From https://css.glass */
   background: rgba(255, 255, 255, 0.3);
   border-radius: 16px;
@@ -174,22 +216,123 @@ section {
   backdrop-filter: blur(6.1px);
   -webkit-backdrop-filter: blur(6.1px);
   border: 1px solid rgba(255, 255, 255, 0.31);
-
-}
-
-section::after{
-    border: 1px solid rgba(0, 0, 255, 0.31);
 }
 
 
 
 @media screen and (min-width: 375px) {
+  header{
+    height: var(--header-height-small);
+  }
 
-  
+  header h2 {
+    font-size: var(--header-h2-size-small);
+  }
+
+  header h4{
+    font-size: var(--header-h4-size-small);
+    top: var(--header-h4-top-small)
+  }
+
+  header img{
+    width: var(--header-img-width-small);
+    height: var(--header-img-height-small);
+  }
+
+  header ul{
+    flex-direction: column;
+    gap: 1em;
+  }
+
+  section {
+    width: var(--section-width-small);
+    height: var(--section-height-small);
+  }
+
+  section h2{
+    font-size: var(--section-h2-size-small);
+  }
+
+  section p {
+    font-size: var(--section-p-size-small);
+  }
+
+  footer{
+    font-size: var(--footer-size-small);
+    bottom: var(--footer-cornerSpacing-small);
+    right: var(--footer-cornerSpacing-small);
+  }
+
+  section:nth-of-type(4) ul{
+    gap: var(--classSection-gap-small);
+    width: var(--classSection-width-small);
+  }
+
+  section:nth-of-type(odd):not(section:last-of-type){
+    left: var(--edgeSpacing-small);
+  }
+
+  section:nth-of-type(even):not(section:last-of-type){
+    right: var(--edgeSpacing-small);
+  }
 }
 
 
 @media screen and (min-width: 1081px) {
+  header{
+    height: var(--header-height-large);
+  }
 
+  header h2 {
+    font-size: var(--header-h2-size-large);
+  }
+
+  header h4{
+    font-size: var(--header-h4-size-large);
+    top: var(--header-h4-top-large)
+  }
+
+  header img{
+    width: var(--header-img-width-large);
+    height: var(--header-img-height-large);
+  }
+
+  header ul{
+    flex-direction: row;
+    gap: 1em;
+  }
+
+  section {
+    width: var(--section-width-large);
+    height: var(--section-height-large);
+  }
+
+  section h2{
+    font-size: var(--section-h2-size-large);
+  }
+
+  section p {
+    font-size: var(--section-p-size-large);
+  }
+
+  footer{
+    font-size: var(--footer-size-large);
+    bottom: var(--footer-cornerSpacing-large);
+    right: var(--footer-cornerSpacing-large);
+  }
+
+  section:nth-of-type(4) ul{
+    gap: var(--classSection-gap-large);
+    width: var(--classSection-width-large);
+  }
+
+  section:nth-of-type(odd):not(section:last-of-type){
+    left: var(--edgeSpacing-large);
+  }
+
+  section:nth-of-type(even):not(section:last-of-type){
+    right: var(--edgeSpacing-large);
+  }
   
 }
+

@@ -4,14 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Chris Donker Portfolio</title>
-    <link rel="stylesheet" href="style.css" />
 
+    <link rel="stylesheet" href="style.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet"/>
   </head>
   <body>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -20,14 +17,21 @@
     <script src="https://cdn.jsdelivr.net/npm/liquidjs/dist/liquid.browser.min.js"></script>
     <script type="module" src="fetch.js"></script>
 
-    <button onclick="toggleTheme()" class="theme-toggle">Toggle Theme</button>
     <main id="contentOverlay">
       <template>
         {% for person in me %} {% assign customData = person.custom | parse_json
         %}
         <header id="Heading">
-          <h2>Hallo ik ben {{person.name}}</h2>
-          <h4>" {{person.nickname}} "</h4>
+          <ul>
+            <li>
+              <img src="images/me-nobg.png" alt="profile picture of Chris Donker 'the one and only'">
+            </li>
+            <li>
+              <h2>Hallo ik ben {{person.name}}</h2>
+              <h4>" {{person.nickname}} "</h4>
+            </li>
+          </ul>
+
         </header>
 
         <section id="Basic info">
@@ -41,7 +45,7 @@
           <h2>Dit zijn mijn hobbies</h2>
           <ul>
             {% for hobby in person.customData.Hobbies %}
-            <li>{{ hobby }}</li>
+            <li><p>{{ hobby }}</p></li>
             {% endfor %}
           </ul>
         </section>
@@ -50,7 +54,7 @@
           <h2>Mijn Leerdoelen</h2>
           <ul>
             {% for goal in person.customData.Leerdoelen %}
-            <li>{{ goal[0] }}: {{ goal[1] }}</li>
+            <li><p>{{ goal[0] }}: {{ goal[1] }}</p></li>
             {% endfor %}
           </ul>
         </section>
@@ -60,7 +64,7 @@
           <p>Total number of people: {{stats.totalCount}}</p>
           <ul>
             {% for nickname in stats.allNicknames %}
-            <li>{{nickname}}</li>
+            <li><p>{{nickname}}</p></li>
             {% endfor %}
           </ul>
           <p>Random bio: {{stats.randomBio}}</p>
@@ -73,19 +77,13 @@
             days!
           </p>
           <p>Birthday date: {{nextBirthday.date | date: "%B %d"}}</p>
+          <p>They will be {{nextBirthday.nextAge}} on this day!!</p>
         </section>
 
         <footer>©Copyright {{person.name}} Donker, <span></span></footer>
 
         {%endfor %}
       </template>
-
-      <!-- {% if person.birthdate %} {% assign birthdate = person.birthdate %}
-        <div class="birthday-container" data-birthdate="{{birthdate}}">
-          <p>Birthday: <span class="birthday-date">{{birthdate}}</span></p>
-          <p>Days until birthday: <span class="days-until"></span></p>
-            <p>Days old: <span class="days-old"></span></p>
-        </div>  -->
     </main>
   </body>
 </html>
