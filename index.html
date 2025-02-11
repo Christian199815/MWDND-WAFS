@@ -19,10 +19,12 @@
     <script type="module" src="main.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/liquidjs/dist/liquid.browser.min.js"></script>
     <script type="module" src="fetch.js"></script>
+
+    <button onclick="toggleTheme()" class="theme-toggle">Toggle Theme</button>
     <main id="contentOverlay">
       <template>
-        {% for person in me %} 
-        {% assign customData = person.custom | parse_json %}
+        {% for person in me %} {% assign customData = person.custom | parse_json
+        %}
         <header id="Heading">
           <h2>Hallo ik ben {{person.name}}</h2>
           <h4>" {{person.nickname}} "</h4>
@@ -39,9 +41,9 @@
           <h2>Dit zijn mijn hobbies</h2>
           <ul>
             {% for hobby in person.customData.Hobbies %}
-                <li>{{ hobby }}</li>
+            <li>{{ hobby }}</li>
             {% endfor %}
-            </ul>
+          </ul>
         </section>
 
         <section id="leerdoelen">
@@ -49,7 +51,7 @@
           <ul>
             {% for goal in person.customData.Leerdoelen %}
             <li>{{ goal[0] }}: {{ goal[1] }}</li>
-        {% endfor %}
+            {% endfor %}
           </ul>
         </section>
 
@@ -58,15 +60,18 @@
           <p>Total number of people: {{stats.totalCount}}</p>
           <ul>
             {% for nickname in stats.allNicknames %}
-                <li>{{nickname}}</li>
+            <li>{{nickname}}</li>
             {% endfor %}
-            </ul>
-            <p>Random bio: {{stats.randomBio}}</p>
-          </section>
+          </ul>
+          <p>Random bio: {{stats.randomBio}}</p>
+        </section>
 
         <section id="next-birthday">
           <h2>Next Birthday</h2>
-          <p>{{nextBirthday.name}} has their birthday in {{nextBirthday.days}} days!</p>
+          <p>
+            {{nextBirthday.name}} has their birthday in {{nextBirthday.days}}
+            days!
+          </p>
           <p>Birthday date: {{nextBirthday.date | date: "%B %d"}}</p>
         </section>
 

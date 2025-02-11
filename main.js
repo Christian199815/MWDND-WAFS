@@ -394,3 +394,5 @@ window.onload = init;
 // Voor het klaarmaken van de OBJ models
 // https://threejs.org/docs/index.html#api/en/loaders/OBJLoader
 
+
+
