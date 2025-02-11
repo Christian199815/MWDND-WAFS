@@ -123,9 +123,40 @@ section:nth-of-type(2) ul {
 
 /* leerdoelen section */
 section:nth-of-type(3) {
+  left: 2em;
+  top: 25%;
   flex-direction: column;
   align-items: center;
 }
+
+/* klas section */
+section:nth-of-type(4) {
+  right: 2em;
+  top: 25%;
+  height: fit-content;
+  flex-direction: column;
+  align-items: center;
+}
+
+section:nth-of-type(4) ul {
+  margin:0;
+  padding:0;
+  list-style-type: none;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  width: 300px; /* or any width you need */
+}
+
+/* Birthday section */
+section:nth-of-type(5) {
+  /* left: 2em; */
+  bottom: 0;
+  flex-direction: column;
+  align-items: center;
+}
+
+
 
 footer {
   bottom: 0.7em;
@@ -148,4 +179,17 @@ section {
 
 section::after{
     border: 1px solid rgba(0, 0, 255, 0.31);
+}
+
+
+
+@media screen and (min-width: 375px) {
+
+  
+}
+
+
+@media screen and (min-width: 1081px) {
+
+  
 }

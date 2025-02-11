@@ -51,7 +51,23 @@
             <li>{{ goal[0] }}: {{ goal[1] }}</li>
         {% endfor %}
           </ul>
+        </section>
 
+        <section id="classData">
+          <h2>Class Data</h2>
+          <p>Total number of people: {{stats.totalCount}}</p>
+          <ul>
+            {% for nickname in stats.allNicknames %}
+                <li>{{nickname}}</li>
+            {% endfor %}
+            </ul>
+            <p>Random bio: {{stats.randomBio}}</p>
+          </section>
+
+        <section id="next-birthday">
+          <h2>Next Birthday</h2>
+          <p>{{nextBirthday.name}} has their birthday in {{nextBirthday.days}} days!</p>
+          <p>Birthday date: {{nextBirthday.date | date: "%B %d"}}</p>
         </section>
 
         <footer>©Copyright {{person.name}} Donker, <span></span></footer>

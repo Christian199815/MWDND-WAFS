@@ -55,7 +55,7 @@ function init() {
     const light = new THREE.AmbientLight(0xffffff); // soft white light
     scene.add(light);
 
-    changeSkybox(skyboxes[0]);
+    changeSkybox(skyboxes[1]);
 
     clock = new THREE.Clock();
 
@@ -285,72 +285,34 @@ function onDocumentKeyUp(event) {
 
 // #region Dom Manipulation
 
-function activateElement(element, bool) {
+// Define the sections and their activation ranges
+const sections = [
+    { selector: 'header', minScroll: 0, maxScroll: 0 },
+    { selector: 'section:nth-of-type(1)', minScroll: -3, maxScroll: -1 },
+    { selector: 'section:nth-of-type(2)', minScroll: -9, maxScroll: -5 },
+    { selector: 'section:nth-of-type(3)', minScroll: -15, maxScroll: -11 },
+    { selector: 'section:nth-of-type(4)', minScroll: -19, maxScroll: -17 },
+    { selector: 'section:nth-of-type(5)', minScroll: -23, maxScroll: -20 }
+];
 
+function activateElement(element, bool) {
     const targetElement = document.querySelector(element);
     if (!targetElement) {
         console.warn(`Element "${element}" not found`);
         return;
     }
-
     targetElement.style.display = bool ? "flex" : "none";
 }
 
 function addModelAtHeight() {
-    wholeScroll = Math.round(scrollPosition);
+    const wholeScroll = Math.round(scrollPosition);
     console.log("Current scroll position:", wholeScroll);
 
-    switch (wholeScroll) {
-
-        case -20:
-            activateElement('section:nth-of-type(3)', false);
-            break;
-
-        case -19:
-            activateElement('section:nth-of-type(3)', true);
-            break;
-
-        case -17:
-            activateElement('section:nth-of-type(3)', true);
-            break;
-
-        case -16:
-            activateElement('section:nth-of-type(3)', false);
-            break;
-
-
-
-        case -15:
-            break;
-
-        case -14:
-            activateElement('section:nth-of-type(2)', false);
-            break;
-
-        case -12:
-            activateElement('section:nth-of-type(2)', true);
-            break;
-
-        case -10:
-            activateElement('section:nth-of-type(2)', false);
-            break;
-
-
-
-        case -6:
-            activateElement('section:nth-of-type(1)', false);
-            break;
-        case -3:
-            activateElement('section:nth-of-type(1)', true);
-            break;
-        case -1:
-            activateElement('section:nth-of-type(1)', false);
-            activateElement('header', false);
-            break;
-        case 0:
-            activateElement('header', true);
-            break;
-    }
+    // Check each section's range and activate/deactivate accordingly
+    sections.forEach(section => {
+        const isInRange = wholeScroll >= section.minScroll && wholeScroll <= section.maxScroll;
+        activateElement(section.selector, isInRange);
+    });
 }
 
 function zoomBasedOnScroll() {
