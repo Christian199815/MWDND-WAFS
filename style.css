@@ -1,35 +1,151 @@
-body { margin: 0;  background-color: lightblue;}
-canvas { display: block; background-color: lightblue;}
+body,
+header {
+  margin: 0;
+  padding: 0;
+}
+canvas {
+  display: block;
+}
 
-#contentOverlay{ 
-    color: red; 
-    position: absolute;
-    left: 0;
-    bottom: 0;
+:root {
+  --: ;
+}
 
+header,
+section,
+footer {
+  position: absolute;
+}
 
-    width: 100vw;
-    height: 100vh;
-   
+main {
+  color: #781c15;
+  position: relative;
+  width: 100vw;
+  height: 100vh;
 
-    border: 3px solid blue;
+  display: flex;
+  justify-content: center;
+  background: transparent; /* Explicitly set transparent background */
+  background-color: transparent; /* Ensure no background color */
+  pointer-events: none; /* Allow clicking through to canvas */
+}
 
-    display: flex;
-    justify-content: center;
+/* Make specific elements within overlay clickable */
+main > * {
+  pointer-events: auto;
+}
+
+/* Ensure canvas stays behind overlay */
+canvas {
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
+header {
+  display: flex;
+  justify-content: center;
+
+  bottom: 0;
+
+  width: 100vw;
+  height: 20rem;
+}
+
+header h2 {
+  font-size: 5em;
+
+  font-family: "Oswald", serif;
+  font-optical-sizing: auto;
+  font-weight: 800;
+  font-style: normal;
+}
+
+header h4 {
+  font-size: 4em;
+  color: #1266a7;
+  margin: 0;
+  position: absolute;
+  top: 2.9em;
+}
+
+section {
+  display: flex;
+  width: 20em;
+  height: 12em;
+}
+
+/* Basic info section */
+section:nth-of-type(1) {
+  left: 2em;
+  top: 25%;
+
+  flex-direction: column;
+  align-items: center;
+}
+
+section:nth-of-type(1) p {
+  margin: 0;
+  padding: 0;
+  font-size: 1.2em;
+}
+
+/* Woonplaats */
+section:nth-of-type(1) p:nth-of-type(1)::before {
+}
+
+/* Opleiding */
+section:nth-of-type(1) p:nth-of-type(2)::before {
+}
+
+/* Werk */
+section:nth-of-type(1) p:nth-of-type(3)::before {
+}
+
+/* hobbies info section */
+section:nth-of-type(2) {
+  right: 2em;
+  top: 25%;
+  align-items: center;
+
+  flex-direction: column;
+}
+
+section:nth-of-type(2) ul {
+  margin: 0;
+  padding: 0;
+  font-size: 1.2em;
+
+  list-style: none;
+}
+
+/* leerdoelen section */
+section:nth-of-type(3) {
+  flex-direction: column;
+  align-items: center;
+}
+
+footer {
+  bottom: 0.7em;
+  right: 0.7em;
+}
+
+header,
+section {
+  display: none;
+
+  /* From https://css.glass */
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(6.1px);
+  -webkit-backdrop-filter: blur(6.1px);
+  border: 1px solid rgba(255, 255, 255, 0.31);
 
 }
 
-#contentOverlay h2{
-    font-size: 2em;
-    margin: 0;
-    position: absolute;
-    bottom: 2em;
-}
-
-#contentOverlay h3{
-    font-size: 4em;
-    color: blue;
-    margin: 0;
-    position: absolute;
-    top: 2em;
+section::after{
+    border: 1px solid rgba(0, 0, 255, 0.31);
 }

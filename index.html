@@ -1,42 +1,70 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Three.js OBJ Loader</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chris Donker Portfolio</title>
+    <link rel="stylesheet" href="style.css" />
 
-  
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.rawgit.com/mrdoob/three.js/r128/examples/js/loaders/OBJLoader.js"></script>
-    <script src="main.js"></script>
+    <script type="module" src="main.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/liquidjs/dist/liquid.browser.min.js"></script>
-
     <script type="module" src="fetch.js"></script>
+    <main id="contentOverlay">
+      <template>
+        {% for person in me %} 
+        {% assign customData = person.custom | parse_json %}
+        <header id="Heading">
+          <h2>Hallo ik ben {{person.name}}</h2>
+          <h4>" {{person.nickname}} "</h4>
+        </header>
 
-    <div id="contentOverlay">
-        <template>
-          {% for person in persons %}
-            <h2>hallo ik ben {{person.name}}</h2>
-        
-          {%endfor %}
+        <section id="Basic info">
+          <h2>Standaard Informatie</h2>
+          <p>Ik woon in {{ person.customData.Woonplaats }}</p>
+          <p>Mijn huidige opleiding is {{ person.customData.Opleiding }}</p>
+          <p>Ik werk met alle liefde voor de {{ person.customData.Werk }}</p>
+        </section>
+
+        <section id="Hobbies">
+          <h2>Dit zijn mijn hobbies</h2>
+          <ul>
+            {% for hobby in person.customData.Hobbies %}
+                <li>{{ hobby }}</li>
+            {% endfor %}
+            </ul>
+        </section>
+
+        <section id="leerdoelen">
+          <h2>Mijn Leerdoelen</h2>
+          <ul>
+            {% for goal in person.customData.Leerdoelen %}
+            <li>{{ goal[0] }}: {{ goal[1] }}</li>
+        {% endfor %}
+          </ul>
+
+        </section>
+
+        <footer>©Copyright {{person.name}} Donker, <span></span></footer>
+
+        {%endfor %}
       </template>
 
-        <!-- {% if person.birthdate %} {% assign birthdate = person.birthdate %}
+      <!-- {% if person.birthdate %} {% assign birthdate = person.birthdate %}
         <div class="birthday-container" data-birthdate="{{birthdate}}">
           <p>Birthday: <span class="birthday-date">{{birthdate}}</span></p>
           <p>Days until birthday: <span class="days-until"></span></p>
             <p>Days old: <span class="days-old"></span></p>
         </div>  -->
-
-        {% endif %} 
-    </div>
-
-
-  
-
-
-</body>
+    </main>
+  </body>
 </html>
