@@ -11,76 +11,92 @@
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet"/>
   </head>
   <body>
+    <script type="module" src="fetch.js"></script>
+    <script type="module" src="confetti.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.rawgit.com/mrdoob/three.js/r128/examples/js/loaders/OBJLoader.js"></script>
     <script type="module" src="main.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/liquidjs/dist/liquid.browser.min.js"></script>
-    <script type="module" src="fetch.js"></script>
 
-    <main id="contentOverlay">
+    <main id="main-content" role="main" class="contentOverlay">
+      
       <template>
         {% for person in me %} {% assign customData = person.custom | parse_json
         %}
-        <header id="Heading">
+        <header id="landing" role="banner">
           <ul>
             <li>
-              <img src="images/me-nobg.png" alt="profile picture of Chris Donker 'the one and only'">
+              <img 
+                src="images/me-nobg.png" 
+                alt="profile picture of Chris Donker 'the one and only'"
+                tabindex="0"
+                />
             </li>
             <li>
-              <h2>Hallo ik ben {{person.name}}</h2>
-              <h4>" {{person.nickname}} "</h4>
+              <h2 tabindex="0">Hallo ik ben <span class="api-content">{{person.name}}</span></h2>
+              <h4 tabindex="0">" <span class="api-content">{{person.nickname}}</span>"</h4>
             </li>
           </ul>
-
         </header>
 
-        <section id="Basic info">
-          <h2>Standaard Informatie</h2>
-          <p>Ik woon in {{ person.customData.Woonplaats }}</p>
-          <p>Mijn huidige opleiding is {{ person.customData.Opleiding }}</p>
-          <p>Ik werk met alle liefde voor de {{ person.customData.Werk }}</p>
+        <section id="basicinfo" role="region" aria-label="Basic Information">
+          <h2 id="basicinfo-title" tabindex="0" aria-label="Standard Information">Standaard Informatie</h2>
+          <p tabindex="0" aria-label="Location">Ik woon in <span class="api-content">{{ person.customData.Woonplaats }}</span></p>
+          <p tabindex="0" aria-label="Education">Mijn huidige opleiding is <span class="api-content">{{ person.customData.Opleiding }}</span></p>
+          <p tabindex="0" aria-label="Work">Ik werk met alle liefde voor de <span class="api-content">{{ person.customData.Werk }}</span></p>
         </section>
-
-        <section id="Hobbies">
-          <h2>Dit zijn mijn hobbies</h2>
-          <ul>
+        
+        <section id="hobbies" role="region" aria-label="Hobbies Section">
+          <h2 id="hobbies-title" tabindex="0" aria-label="My Hobbies">Dit zijn mijn hobbies</h2>
+          <ul aria-label="List of hobbies">
             {% for hobby in person.customData.Hobbies %}
-            <li><p>{{ hobby }}</p></li>
+            <li><p tabindex="0" aria-label="Hobby: {{hobby}}"><span class="api-content">{{ hobby }}</span></p></li>
             {% endfor %}
           </ul>
         </section>
-
-        <section id="leerdoelen">
-          <h2>Mijn Leerdoelen</h2>
-          <ul>
-            {% for goal in person.customData.Leerdoelen %}
-            <li><p>{{ goal[0] }}: {{ goal[1] }}</p></li>
-            {% endfor %}
+        
+        <section id="leerdoelen" role="region" aria-label="Learning Goals Section">
+          <h2 id="leerdoelen-title" tabindex="0" aria-label="My Learning Goals">Mijn Leerdoelen</h2>
+          <ul aria-label="List of learning goals">
+              {% for goal in person.customData.Leerdoelen %}
+              <li><p tabindex="0" aria-label="Goal {{forloop.index}}: {{goal}}">Leerdoel <span class="api-content">{{forloop.index}}</span>:<br> <span class="api-content">{{ goal }}</span></p></li>
+              {% endfor %}
           </ul>
         </section>
 
-        <section id="classData">
-          <h2>Class Data</h2>
-          <p>Total number of people: {{stats.totalCount}}</p>
-          <ul>
+        <section id="classData" role="region" aria-label="Class Data Section">
+          <div>
+            <h2 id="classData-title" tabindex="0">Data uit de klas</h2>
+            <p tabindex="0" aria-label="Total people: {{stats.totalCount}}">Total number of people: <span class="api-content">{{stats.totalCount}}</span></p>
+          </div>
+          <ul title="Alle gebruikers met een nickname:" aria-label="List of nicknames">
             {% for nickname in stats.allNicknames %}
-            <li><p>{{nickname}}</p></li>
+            <li><p tabindex="0" aria-label="Nickname: {{nickname}}"><span class="api-content">{{nickname}}</span></p></li>
             {% endfor %}
           </ul>
-          <p>Random bio: {{stats.randomBio}}</p>
+          <p tabindex="0" aria-label="Random biography">Random bio: <br> <span class="api-content">{{stats.randomBio.bio}}</span><br>-<b><span class="api-content">{{stats.randomBio.name}}</span></b>-</p>
         </section>
 
-        <section id="next-birthday">
-          <h2>Next Birthday</h2>
-          <p>
-            {{nextBirthday.name}} has their birthday in {{nextBirthday.days}}
-            days!
-          </p>
-          <p>Birthday date: {{nextBirthday.date | date: "%B %d"}}</p>
-          <p>They will be {{nextBirthday.nextAge}} on this day!!</p>
+        <!-- {% assign days = nextBirthday.days %} -->
+
+        <section id="nextBirthday" role="region" aria-label="Next Birthday Section">
+          <h2 id="nextBirthday-title" tabindex="0">Next Birthday</h2>
+          {% if nextBirthday.days == 0 %}
+            <p tabindex="0" aria-label="Birthday countdown for {{nextBirthday.name}}"><span class="api-content">{{nextBirthday.name}}</span> has their birthday today!!!</p>
+          {% else %}
+            <p tabindex="0" aria-label="Birthday countdown for {{nextBirthday.name}}"><span class="api-content">{{nextBirthday.name}}</span> has their birthday in <span class="api-content">{{nextBirthday.days}}</span> days!</p>
+          {% endif %}
+          <p tabindex="0" aria-label="Birthday date">Birthday date: <span class="api-content">{{nextBirthday.date | date: "%B %d"}}</span></p>
+          <p tabindex="0" aria-label="Age on birthday">They will be <span class="api-content">{{nextBirthday.nextAge}}</span> on this day!!</p>
         </section>
 
-        <footer>©Copyright {{person.name}} Donker, <span></span></footer>
+        <div class="content">
+
+        </div>
+        
+        <footer role="contentinfo" aria-label="Copyright information">
+          <p tabindex="0">©Copyright <span class="api-content">{{person.name}}</span> Donker, <span class="year api-content"></span></p>
+        </footer>
 
         {%endfor %}
       </template>

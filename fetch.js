@@ -12,16 +12,19 @@ const meData = await fetchedMe.json();                      // conver the stored
 
 // Fetch others data
 const fetchedOthers = await fetch(othersUrl);               // store the fetch from the others URL
-const othersData = await fetchedOthers.json();              // convert the stored fetch in to JSON
+export let othersData = await fetchedOthers.json();              // convert the stored fetch in to JSON
 
 // Parse the custom field for each person before passing to template
 meData.data = meData.data.map(person => ({
     ...person,
-    customData: JSON.parse(person.custom)                   // Add parsed custom data
+    customData: {
+        ...JSON.parse(person.custom),
+        Leerdoelen: Object.values(JSON.parse(person.custom).Leerdoelen)
+    }
 }));
 
 const template = document.querySelector('template');        //store the content from <template>
-const result = document.querySelector('#contentOverlay');   //store the main named "contentOverlay"
+const result = document.querySelector('.contentOverlay');   //store the main named "contentOverlay"
 const engine = new liquidjs.Liquid();                       //init the Liquid Engine
 
 
@@ -58,21 +61,38 @@ engine.parseAndRender(template.innerHTML, {
 function thisYear() {
     const today = new Date();
     const thisYear = today.getFullYear();
-    const thisYearSpan = document.querySelector('footer span');
+    const thisYearSpan = document.querySelector('.year');
     thisYearSpan.textContent = thisYear;
 }
 
 // Calculate the amount of days from now until someone's birthday
 // Do this for all objects in the data set
 // Only on the objects that have a birthdate
-function findClosestBirthday(peopleData) {
+export function findClosestBirthday(peopleData) {
     const today = new Date();
     let closestPerson = null;
     let minimumDays = Infinity;
     let nextAge = 0;
 
-    peopleData.data.forEach(person => {
-        if (!person.birthdate) return;
+    // Check for today's birthdays first
+    for (const person of peopleData.data) {
+        if (!person.birthdate) continue;
+        
+        const birthdate = new Date(person.birthdate);
+        if (birthdate.getMonth() === today.getMonth() && 
+            birthdate.getDate() === today.getDate()) {
+            return {
+                name: person.name,
+                days: 0,
+                birthdate: person.birthdate,
+                nextAge: today.getFullYear() - birthdate.getFullYear()
+            };
+        }
+    }
+
+    // If no birthday today, find next closest
+    for (const person of peopleData.data) {
+        if (!person.birthdate) continue;
 
         const birthdate = new Date(person.birthdate);
         const nextBirthday = new Date(
@@ -94,7 +114,7 @@ function findClosestBirthday(peopleData) {
             closestPerson = person;
             nextAge = nextBirthday.getFullYear() - birthdate.getFullYear();
         }
-    });
+    }
 
     return {
         name: closestPerson?.name || 'No one found',
@@ -103,7 +123,6 @@ function findClosestBirthday(peopleData) {
         nextAge: nextAge || 0
     };
 }
-
 
 // Count objects with ID so we get all the people from the class
 function countObjectsWithId(data) {
@@ -114,12 +133,19 @@ function countObjectsWithId(data) {
 function getAllNicknames(data) {
     return data.data
         .map(obj => obj.nickname)
-        .filter(nickname => nickname !== null && nickname !== "");
+        .filter(nickname => nickname !== null && nickname !== "")
+        .sort(() => Math.random() - 0.5);  // Randomizes the array
 }
 
 // Get random bio from one of the objects, if there is no bio filled than it will return a new one.
 function getRandomBio(data) {
     const biosWithContent = data.data.filter(obj => obj.bio !== null && obj.bio !== "");
     const randomIndex = Math.floor(Math.random() * biosWithContent.length);
-    return biosWithContent[randomIndex].bio;
+    return {
+        bio: biosWithContent[randomIndex].bio,
+        name: biosWithContent[randomIndex].name
+    };
 }
+
+window.findClosestBirthday = findClosestBirthday;
+window.othersData = othersData;

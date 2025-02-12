@@ -1,3 +1,5 @@
+/* #region General */
+
 body,
 header {
   margin: 0;
@@ -13,16 +15,44 @@ ul{
   padding: 0;
 }
 
+header,
+section,
+footer {
+  position: absolute;
+}
+
+header,
+section {
+  /* display: none; */
+  opacity: 0;
+  /* From https://css.glass */
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(6.1px);
+  -webkit-backdrop-filter: blur(6.1px);
+  border: 1px solid rgba(255, 255, 255, 0.31);
+
+  transition: opacity 0.3s ease;
+
+}
+
+section:not(section:last-of-type){
+  top: 5%;
+}
+
+/* #endregion */
+
 :root {
-  --hardcode-color: #781c15;
-  --highlight-color: #1266a7;
-  --api-color:  color-mix( in oklch, var(--hardcode-color) 80%, var(--highlight-color));
+  --hardcode-color: #fff;
+  --highlight-color: #192d3d;
+  --api-color:  darkblue;
 
   /* 375px */
-  --edgeSpacing-small: 1em;
+  --edgeSpacing-small: 1.1em;
   --header-height-small: 20em;
-  --section-width-small: 12em;
-  --section-height-small: 8em;
+  --section-width-small: fit-content;
+  --section-height-small: fit-content;
 
   --header-h2-size-small: 3em;
   --header-h4-size-small: 3em;
@@ -34,7 +64,7 @@ ul{
   --section-h2-size-small: 1.3em;
   --section-p-size-small: 1.1em;
 
-  --footer-size-small: 1em;
+  --footer-size-small: .8em;
   --footer-cornerSpacing-small: 0.7em;
 
   --classSection-gap-small: 10px;
@@ -43,8 +73,8 @@ ul{
   /* 1081px */
   --edgeSpacing-large: 2em;
   --header-height-large: 19em;
-  --section-width-large: 20em;
-  --section-height-large: 10em;
+  --section-width-large: fit-content;
+  --section-height-large: fit-content;
 
   --header-h2-size-large: 5em;
   --header-h4-size-large: 4em;
@@ -52,8 +82,8 @@ ul{
   --header-img-width-large: 18em;
   --header-img-height-large: 18em;
 
-  --section-h2-size-large: 1em;
-  --section-p-size-large: 1em;
+  --section-h2-size-large: 3em;
+  --section-p-size-large: 1.3em;
 
   --footer-size-large: 1em;
   --footer-cornerSpacing-large: 0.7em;
@@ -62,14 +92,9 @@ ul{
   --classSection-width-large: 300px;
 }
 
-header,
-section,
-footer {
-  position: absolute;
-}
-
+/*#region main */
 main {
-  color: #781c15;
+  color: var(--hardcode-color);
   position: relative;
   width: 100vw;
   height: 100vh;
@@ -95,6 +120,9 @@ canvas {
   z-index: -1;
 }
 
+/*#endregion */
+
+/*#region header */
 header {
   display: flex;
   justify-content: center;
@@ -120,7 +148,6 @@ header ul li{
 }
 
 header h2 {
-  /* font-size: 5em; */
   margin:0;
   padding: 0;
 
@@ -131,10 +158,8 @@ header h2 {
 }
 
 header h4 {
-  color: #1266a7;
+  color: var(--highlight-color);
   margin: 0;
-  /* position: absolute; */
-
 
   font-family: "Oswald", serif;
   font-optical-sizing: auto;
@@ -142,10 +167,11 @@ header h4 {
   font-style: normal;
 }
 
+/*#endregion */
+
+/*#region section */
 section {
-  display: flex;
-  width: 20em;
-  height: 12em;
+  padding: .7em;
 
   flex-direction: column;
   align-items: center;
@@ -171,55 +197,96 @@ section h2{
 }
 
 /* Basic info section */
-section:nth-of-type(1) {
-
+section:nth-of-type(1){
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
 }
 
-/* hobbies info section */
-section:nth-of-type(2) {
-
+section:nth-of-type(1) h2{
+  grid-area: 1 / 1 / 2 / 4;
+  margin: 0;
+  padding: 0;
 }
+
+/* First section paragraphs */
+section:nth-of-type(1) p:nth-of-type(1) {
+  grid-area: 3 / 1 / 4 / 4;
+}
+
+section:nth-of-type(1) p:nth-of-type(2) {
+  grid-area: 4 / 1 / 5 / 4;
+}
+
+section:nth-of-type(1) p:nth-of-type(3) {
+  grid-area: 5 / 1 / 6 / 4;
+}
+
 
 /* leerdoelen section */
 section:nth-of-type(3) {
-
+  width: 24em;
 }
 
 /* klas section */
 section:nth-of-type(4) {
-  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2rem;
+  width: 35em;
+  justify-content: start;
 
+  top: 0;
+}
+
+section:nth-of-type(4) div{
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  /* gap: 12em; */
 }
 
 section:nth-of-type(4) ul {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
+}
+
+section:nth-of-type(4) ul[title]::before {
+  content: attr(title);
+  display: block;
+  font-weight: bold;
+  padding: 4px;
+  grid-column: 1 / -1; /* Makes it span full width */
+}
+
+section:nth-of-type(4) > p{
+  white-space: pre-line;
+  text-wrap: wrap;
 }
 
 /* Birthday section */
 section:nth-of-type(5) {
-  bottom: 2em; 
   height: fit-content;
 }
 
-section:not(section:last-of-type){
-  top: 25%;
+
+
+/* When any element within the section is focused */
+section:has(*:focus) {
+  opacity: 1;
 }
 
-header,
-section {
-  display: none;
-  /* From https://css.glass */
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 16px;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(6.1px);
-  -webkit-backdrop-filter: blur(6.1px);
-  border: 1px solid rgba(255, 255, 255, 0.31);
+/* When the section itself is focused */
+section:focus-within {
+  opacity: 1;
 }
 
+/*#endregion */
 
-
+/*#region @media screen */
 @media screen and (min-width: 375px) {
   header{
     height: var(--header-height-small);
@@ -274,6 +341,10 @@ section {
 
   section:nth-of-type(even):not(section:last-of-type){
     right: var(--edgeSpacing-small);
+  }
+
+  section:nth-of-type(5){
+    bottom: 3em;
   }
 }
 
@@ -333,6 +404,42 @@ section {
   section:nth-of-type(even):not(section:last-of-type){
     right: var(--edgeSpacing-large);
   }
+
+  section:nth-of-type(5){
+    bottom: var(--edgeSpacing-large);
+  }
   
 }
+/*#endregion */
 
+/*#region extra's  */
+/* Focus styles for individual elements */
+[tabindex="0"]:focus {
+  outline: 2px solid #1266a7;
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Ensure footer is always visible */
+footer {
+  opacity: 1;
+}
+
+.api-content{
+  /* color: var(--api-color); */
+  /* filter: invert(1); */
+  mix-blend-mode:exclusion;
+  font-weight: 500;
+}
+/* #endregion */
+
+/*#region confetti  */
+.content {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/*#endregion */
